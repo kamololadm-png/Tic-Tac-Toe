@@ -1,14 +1,7 @@
 import { useEffect } from 'react'
 import { useGame } from '../context/GameContext'
+import { getComputerMove } from '../utils/getComputerMove'
 import Square from './Square'
-
-function getRandomEmptyIndex(board) {
-  const emptyIndices = board
-    .map((cell, index) => (cell === null ? index : null))
-    .filter((index) => index !== null)
-
-  return emptyIndices[Math.floor(Math.random() * emptyIndices.length)]
-}
 
 export default function Board() {
   const { state, dispatch } = useGame()
@@ -21,7 +14,7 @@ export default function Board() {
     if (currentPlayer !== 'O' || gameOver) return
 
     const timeoutId = setTimeout(() => {
-      const index = getRandomEmptyIndex(board)
+      const index = getComputerMove(board)
       dispatch({ type: 'COMPUTER_MOVE', payload: { index } })
     }, 500)
 
