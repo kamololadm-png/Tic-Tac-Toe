@@ -68,8 +68,53 @@
   min-height: 1.4em;
 }
 
-.status--win { color: var(--win); }
-.status--lose { color: var(--lose); }
+.status-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.status-note {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.status--x { color: var(--x-color); }
+.status--o { color: var(--o-color); }
+.status--draw { color: var(--muted); }
+
+.mode-toggle {
+  display: flex;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.mode-toggle__button {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.mode-toggle__button--active {
+  background: var(--panel);
+  color: var(--text);
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+/*.status--win { color: var(--win); }
+.status--lose { color: var(--lose); }*/
 .status--draw { color: var(--muted); }
 
 /* --- Board --- */

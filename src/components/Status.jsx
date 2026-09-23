@@ -2,24 +2,29 @@ import { useGame } from '../context/GameContext'
 
 export default function Status() {
   const { state } = useGame()
-  const { winner, isDraw, currentPlayer } = state
+  const { winner, isDraw, currentPlayer, mode } = state
+
+  const isComputerTurn = mode === 'vsComputer' && currentPlayer === 'O'
 
   let message = `Next Player: ${currentPlayer}`
   let tone = 'status--active'
 
   if (winner) {
-    message = winner === 'X' ? 'You Win! 🎉' : 'Computer Wins 🤖'
-    tone = winner === 'X' ? 'status--win' : 'status--lose'
+    message = `Winner: ${winner}`
+    tone = winner === 'X' ? 'status--x' : 'status--o'
   } else if (isDraw) {
-    message = "Draw!"
+    message = 'Draw!'
     tone = 'status--draw'
-  } else if (currentPlayer === 'O') {
-    message = 'Computer is thinking…'
   }
 
   return (
-    <p className={`status ${tone}`} role="status" aria-live="polite">
-      {message}
-    </p>
+    <div className="status-block">
+      <p className={`status ${tone}`} role="status" aria-live="polite">
+        {message}
+      </p>
+      {isComputerTurn && !winner && !isDraw && (
+        <p className="status-note">Computer is thinking…</p>
+      )}
+    </div>
   )
 }

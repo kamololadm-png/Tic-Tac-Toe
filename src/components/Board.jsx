@@ -5,13 +5,13 @@ import Square from './Square'
 
 export default function Board() {
   const { state, dispatch } = useGame()
-  const { board, currentPlayer, winner, isDraw, winningLine } = state
+  const { board, currentPlayer, winner, isDraw, winningLine, mode } = state
 
   const gameOver = Boolean(winner) || isDraw
+  const isComputerTurn = mode === 'vsComputer' && currentPlayer === 'O'
 
-  // Computer's turn: wait a beat so the move feels intentional, then play
   useEffect(() => {
-    if (currentPlayer !== 'O' || gameOver) return
+    if (!isComputerTurn || gameOver) return
 
     const timeoutId = setTimeout(() => {
       const index = getComputerMove(board)
@@ -19,7 +19,7 @@ export default function Board() {
     }, 500)
 
     return () => clearTimeout(timeoutId)
-  }, [currentPlayer, gameOver, board, dispatch])
+  }, [isComputerTurn, gameOver, board, dispatch])
 
   function handleSquareClick(index) {
     dispatch({ type: 'MAKE_MOVE', payload: { index } })
@@ -33,7 +33,7 @@ export default function Board() {
           value={value}
           onClick={() => handleSquareClick(index)}
           isWinning={winningLine?.includes(index)}
-          disabled={gameOver || currentPlayer === 'O'}
+          disabled={gameOver || isComputerTurn}
         />
       ))}
     </div>

@@ -2,11 +2,12 @@ import { calculateWinner } from '../utils/calculateWinner'
 
 export const initialState = {
   board: Array(9).fill(null),
-  currentPlayer: 'X', // 'X' is always the human, 'O' is always the computer
+  currentPlayer: 'X',
   winner: null, // 'X' | 'O' | null
   winningLine: null,
   isDraw: false,
   scores: { X: 0, O: 0, draws: 0 },
+  mode: 'vsComputer', // 'vsComputer' | 'twoPlayer'
 }
 
 /**
@@ -15,7 +16,6 @@ export const initialState = {
  * only lives in one place.
  */
 function placeMark(state, index) {
-  // Guard: ignore clicks on a filled cell or moves after the game ended
   if (state.board[index] || state.winner || state.isDraw) return state
 
   const board = [...state.board]
@@ -43,17 +43,14 @@ function placeMark(state, index) {
 export function gameReducer(state, action) {
   switch (action.type) {
     case 'MAKE_MOVE':
-      // Only the human (X) may trigger this action
-      if (state.currentPlayer !== 'X') return state
+      if (state.mode === 'vsComputer' && state.currentPlayer === 'O') return state
       return placeMark(state, action.payload.index)
 
     case 'COMPUTER_MOVE':
-      // Only the computer (O) may trigger this action
-      if (state.currentPlayer !== 'O') return state
+      if (state.mode !== 'vsComputer' || state.currentPlayer !== 'O') return state
       return placeMark(state, action.payload.index)
 
     case 'RESET_BOARD':
-      // New round: wipe the board but keep the running scoreboard
       return {
         ...state,
         board: Array(9).fill(null),
@@ -67,6 +64,18 @@ export function gameReducer(state, action) {
       return {
         ...state,
         scores: { X: 0, O: 0, draws: 0 },
+      }
+
+    case 'SET_MODE':
+      if (action.payload.mode === state.mode) return state
+      return {
+        ...state,
+        mode: action.payload.mode,
+        board: Array(9).fill(null),
+        currentPlayer: 'X',
+        winner: null,
+        winningLine: null,
+        isDraw: false,
       }
 
     default:

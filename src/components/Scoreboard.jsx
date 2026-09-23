@@ -7,7 +7,7 @@ export default function Scoreboard() {
   return (
     <div className="scoreboard" aria-label="Scoreboard">
       <div className="scoreboard__cell">
-        <span className="scoreboard__label">You (X)</span>
+        <span className="scoreboard__label">Player X</span>
         <span className="scoreboard__value">{scores.X}</span>
       </div>
       <div className="scoreboard__cell">
@@ -15,7 +15,7 @@ export default function Scoreboard() {
         <span className="scoreboard__value">{scores.draws}</span>
       </div>
       <div className="scoreboard__cell">
-        <span className="scoreboard__label">Computer (O)</span>
+        <span className="scoreboard__label">Player O</span>
         <span className="scoreboard__value">{scores.O}</span>
       </div>
     </div>
